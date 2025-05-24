@@ -1,0 +1,558 @@
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>
+    Sistem Penjualan Makanan dan Minuman
+  </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&amp;display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</head>
+
+
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        Kantin Kristin USTJ
+      </div>
+      <nav class="nav" id="nav-menu">
+        <ul class="nav-list">
+          <li>
+            <a class="nav-link active" data-page="home" href="#">
+              Beranda
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" data-page="menu" href="#">
+              Menu
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" data-page="cart" href="#">
+              Keranjang
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" data-page="kasir" href="#">
+              Dashboard Kasir
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" data-page="owner" href="#">
+              Dashboard Owner
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" data-page="login" href="#">
+              Login
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <button aria-label="Toggle navigation menu" class="nav-toggle" id="nav-toggle">
+        <i class="fas fa-bars">
+        </i>
+      </button>
+    </div>
+  </header>
+  <main class="main-content container" id="main-content">
+    <!-- Loading overlay -->
+    <div id="loading-overlay" aria-hidden="true" aria-label="Loading">
+      <div class="spinner" role="status" aria-live="polite" aria-busy="true"></div>
+    </div>
+    <!-- Beranda -->
+    <section class="page active" id="page-home">
+      <h1>
+        Selamat Datang di Sistem Penjualan Makanan dan Minuman
+      </h1>
+      <div class="welcome-subtitle">
+        Di Kantin Kristin Kampus Universitas Sains Dan Teknologi Jayapura
+      </div>
+      <p>
+        Sistem ini memfasilitasi interaksi antara Pembeli, Kasir, dan Owner untuk proses pemesanan, transaksi, manajemen menu, dan pelaporan penjualan secara efisien.
+      </p>
+      <img alt="Gambar restoran modern dengan meja dan kursi, serta makanan dan minuman lezat tersaji di atas meja" class="hero-image" height="300" src="https://assets-a1.kompasiana.com/items/album/2020/01/21/img-20200120-111122-5e26a531097f36312e0014f2.jpg" width="800" />
+      <div class="home-description">
+        Perkembangan Teknologi Informasi berjalan dengan amat pesat.
+        Tidak dapat dipungkiri disemua sektor termasuk dunia usaha  memanfaatkan kemajuan teknologi untuk mempermudah pekerjaannya. Dengan kecanggihan teknologi, semua keterbatasan sarana, jarak dan waktu  menjadi permasalahan yang sangat mudah. Dalam hal ini teknologi internet di suatu usaha akan sedikit mengurangi permasalahan yang ada.
+
+        Kantin kampus (Warung Kristin) adalah tempat menjual makanan dan minuman untuk memenuhi kebutuhan makan dan minum disekitar seperti di sekolah dan perkantoran. Universitas Sains dan Teknologi Jayapura (USTJ) memiliki kantin Warung kristen yang dikelola oleh ibu Kristin yang memulai usahanya sejak 2015 Namun jarak antara kantin dengan Gedung tempat mahasiswa dan dosen melakukan  aktifitas perkuliahan cukup jauh sehingga akan  memerlukan waktu tempuh yang cukup lama.  
+        Dengan adanya persaingan usaha dibidang yang sejenis, maka untuk dapat mengimbanginya salah satu cara adalah kantin warung Kristin yang berada di dalam lingkungan kampus harus mengikuti perkembangan teknologi seperti memanfaatkan internet untuk mempermudah mahasiswa dan dosen dalam memesan makanan dan minuman, dengan itu kami membuat aplikasi pemesanan online makanan kantin kampus dapat pula mengefisienkan waktu untuk dosen dan mahasiswa dalam memesan makanan.
+      </div>
+    </section>
+    <!-- Menu -->
+    <section class="page" id="page-menu">
+      <h2>
+        Menu Makanan dan Minuman
+      </h2>
+      <div class="menu-filters">
+        <button class="filter-btn active" data-filter="all">
+          Semua
+        </button>
+        <button class="filter-btn" data-filter="makanan">
+          Makanan   
+        </button>
+        <button class="filter-btn" data-filter="minuman">
+          Minuman
+        </button>
+        <button class="filter-btn" data-filter="promo">
+          Promo
+        </button>
+      </div>
+      <div class="menu-list" id="menu-list">
+      </div>
+    </section>
+    <!-- Keranjang -->
+    <section class="page" id="page-cart">
+      <h2>
+        Keranjang Pesanan
+      </h2>
+      <div class="cart-empty-message" id="cart-empty">
+        Keranjang Anda kosong.
+      </div>
+      <table class="cart-table" hidden="" id="cart-table">
+        <thead>
+          <tr>
+            <th>
+              Item
+            </th>
+            <th>
+              Harga
+            </th>
+            <th>
+              Jumlah
+            </th>
+            <th>
+              Subtotal
+            </th>
+            <th>
+              Aksi
+            </th>
+          </tr>
+        </thead>
+        <tbody id="cart-items">
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="text-right" colspan="3">
+              Total:
+            </td>
+            <td id="cart-total">
+              Rp 0
+            </td>
+            <td>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="cart-actions" hidden="" id="cart-actions">
+        <button class="btn btn-danger" id="btn-clear-cart">
+          Kosongkan Keranjang
+        </button>
+        <button class="btn btn-primary" id="btn-checkout">
+          Konfirmasi Pesanan
+        </button>
+      </div>
+    </section>
+    <!-- Dashboard Kasir -->
+    <section class="page" id="page-kasir">
+      <h2>
+        Dashboard Kasir
+      </h2>
+      <div id="kasir-orders-section">
+        <h3>
+          Pesanan Masuk
+        </h3>
+        <div class="orders-list" id="kasir-orders-list">
+        </div>
+      </div>
+      <div class="order-detail" hidden="" id="kasir-order-detail">
+        <h3>
+          Detail Pesanan
+        </h3>
+        <div id="order-detail-content">
+        </div>
+        <div class="order-actions">
+          <button class="btn btn-success" id="btn-mark-completed">
+            Tandai Selesai
+          </button>
+          <button class="btn btn-secondary" id="btn-print-receipt">
+            Cetak Struk
+          </button>
+          <button class="btn btn-light" id="btn-back-to-orders">
+            Kembali ke Pesanan
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Dashboard Owner -->
+    <section class="page" id="page-owner">
+      <h2>
+        Dashboard Owner
+      </h2>
+      <div class="owner-tabs">
+        <button class="owner-tab-btn active" data-tab="laporan">
+          Laporan Penjualan
+        </button>
+        <button class="owner-tab-btn" data-tab="manajemen-user">
+          Manajemen User
+        </button>
+        <button class="owner-tab-btn" data-tab="manajemen-menu">
+          Manajemen Menu
+        </button>
+      </div>
+      <div class="owner-tab active" id="tab-laporan">
+        <h3>
+          Laporan Penjualan
+        </h3>
+        <div class="report-filters">
+          <label for="report-period">
+            Pilih Periode:
+          </label>
+          <select id="report-period">
+            <option value="harian">
+              Harian
+            </option>
+            <option value="mingguan">
+              Mingguan
+            </option>
+            <option selected="" value="bulanan">
+              Bulanan
+            </option>
+          </select>
+          <button class="btn btn-primary" id="btn-generate-report">
+            Tampilkan Laporan
+          </button>
+        </div>
+        <div class="report-summary" id="report-summary">
+          <p>
+            Total Pendapatan:
+            <span id="total-revenue">
+              Rp 0
+            </span>
+          </p>
+          <p>
+            Item Terlaris:
+            <span id="top-item">
+              -
+            </span>
+          </p>
+        </div>
+        <canvas aria-label="Grafik tren penjualan" height="200" id="sales-chart" role="img" width="400">
+        </canvas>
+        <div class="report-export">
+          <button class="btn btn-secondary" id="btn-export-pdf">
+            Ekspor PDF
+          </button>
+          <button class="btn btn-secondary" id="btn-export-excel">
+            Ekspor Excel
+          </button>
+        </div>
+      </div>
+      <div class="owner-tab" id="tab-manajemen-user">
+        <h3>
+          Manajemen User
+        </h3>
+        <button class="btn btn-primary" id="btn-add-user">
+          Tambah User Baru
+        </button>
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>
+                Nama
+              </th>
+              <th>
+                Email
+              </th>
+              <th>
+                Role
+              </th>
+              <th>
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody id="user-list">
+          </tbody>
+        </table>
+      </div>
+      <div class="owner-tab" id="tab-manajemen-menu">
+        <h3>
+          Manajemen Menu
+        </h3>
+        <button class="btn btn-primary" id="btn-add-menu">
+          Tambah Item Menu
+        </button>
+        <table class="menu-table">
+          <thead>
+            <tr>
+              <th>
+                Gambar
+              </th>
+              <th>
+                Nama
+              </th>
+              <th>
+                Kategori
+              </th>
+              <th>
+                Deskripsi
+              </th>
+              <th>
+                Harga
+              </th>
+              <th>
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody id="menu-management-list">
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <!-- Login -->
+    <section class="page" id="page-login">
+      <h2>
+        Login
+      </h2>
+      <form aria-label="Form login multi-role" class="form-login" id="login-form">
+        <label for="login-email">
+          Email
+        </label>
+        <input autocomplete="username" id="login-email" name="email" required="" type="email" />
+        <label for="login-password">
+          Password
+        </label>
+        <input autocomplete="current-password" id="login-password" name="password" required="" type="password" />
+        <label for="login-role">
+          Pilih Role
+        </label>
+        <select id="login-role" name="role" required="">
+          <option value="pembeli">
+            Pembeli
+          </option>
+          <option value="kasir">
+            Kasir
+          </option>
+          <option value="owner">
+            Owner
+          </option>
+        </select>
+        <button class="btn btn-primary" type="submit">
+          Login
+        </button>
+      </form>
+      <div class="login-social-buttons">
+        <button class="btn btn-google" id="btn-google-signin" type="button" aria-label="Sign in with Google">
+          <i class="fab fa-google"></i> Sign in with Google
+        </button>
+        <button class="btn btn-facebook" id="btn-facebook-signin" type="button" aria-label="Sign in with Facebook">
+          <i class="fab fa-facebook-f"></i> Sign in with Facebook
+        </button>
+      </div>
+      <div class="create-account-link" id="show-create-account">
+        Belum punya akun? Buat akun baru
+      </div>
+      <form aria-label="Form buat akun baru" class="form-login" id="create-account-form">
+        <label for="create-name">
+          Nama Lengkap
+        </label>
+        <input id="create-name" name="name" required="" type="text" />
+        <label for="create-email">
+          Email
+        </label>
+        <input id="create-email" name="email" required="" type="email" />
+        <label for="create-password">
+          Password
+        </label>
+        <input id="create-password" name="password" required="" type="password" minlength="6" />
+        <label for="create-role">
+          Pilih Role
+        </label>
+        <select id="create-role" name="role" required="">
+          <option value="pembeli" selected="">
+            Pembeli
+          </option>
+          <option value="kasir">
+            Kasir
+          </option>
+          <option value="owner">
+            Owner
+          </option>
+        </select>
+        <button class="btn btn-primary" type="submit">
+          Buat Akun
+        </button>
+        <div class="create-account-link" id="hide-create-account" style="margin-top:0.5rem; text-align:center; color:#2563eb; cursor:pointer; user-select:none;">
+          Batal
+        </div>
+      </form>
+      <div aria-live="polite" id="login-message" role="alert" style="margin-top:1rem;">
+      </div>
+    </section>
+    <!-- Modal Add/Edit User -->
+    <div aria-hidden="true" aria-labelledby="modal-user-title" aria-modal="true" class="modal" id="modal-user" role="dialog">
+      <div class="modal-content">
+        <h3 id="modal-user-title">
+          Tambah/Edit User
+        </h3>
+        <form class="form-modal" id="form-user">
+          <label for="user-name">
+            Nama
+          </label>
+          <input id="user-name" name="name" required="" type="text" />
+          <label for="user-email">
+            Email
+          </label>
+          <input id="user-email" name="email" required="" type="email" />
+          <label for="user-role">
+            Role
+          </label>
+          <select id="user-role" name="role" required="">
+            <option value="pembeli">
+              Pembeli
+            </option>
+            <option value="kasir">
+              Kasir
+            </option>
+            <option value="owner">
+              Owner
+            </option>
+          </select>
+          <label for="user-password">
+            Password
+          </label>
+          <input id="user-password" name="password" type="password" />
+          <div class="modal-actions">
+            <button class="btn btn-primary" type="submit">
+              Simpan
+            </button>
+            <button class="btn btn-light" id="btn-cancel-user" type="button">
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Modal Add/Edit Menu -->
+    <div aria-hidden="true" aria-labelledby="modal-menu-title" aria-modal="true" class="modal" id="modal-menu" role="dialog">
+      <div class="modal-content">
+        <h3 id="modal-menu-title">
+          Tambah/Edit Item Menu
+        </h3>
+        <form class="form-modal" id="form-menu">
+          <label for="menu-name">
+            Nama Item
+          </label>
+          <input id="menu-name" name="name" required="" type="text" />
+          <label for="menu-category">
+            Kategori
+          </label>
+          <select id="menu-category" name="category" required="">
+            <option value="makanan">
+              Makanan
+            </option>
+            <option value="minuman">
+              Minuman
+            </option>
+            <option value="promo">
+              Promo
+            </option>
+          </select>
+          <label for="menu-description">
+            Deskripsi
+          </label>
+          <textarea id="menu-description" name="description" required="" rows="3"></textarea>
+          <label for="menu-price">
+            Harga (Rp)
+          </label>
+          <input id="menu-price" min="0" name="price" required="" type="number" />
+          <label for="menu-image-url">
+            URL Gambar
+          </label>
+          <input id="menu-image-url" name="imageUrl" placeholder="https://example.com/image.jpg" required="" type="url" />
+          <div class="modal-actions">
+            <button class="btn btn-primary" type="submit">
+              Simpan
+            </button>
+            <button class="btn btn-light" id="btn-cancel-menu" type="button">
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Modal Konfirmasi Pesanan -->
+    <div aria-hidden="true" aria-labelledby="modal-checkout-title" aria-modal="true" class="modal" id="modal-checkout" role="dialog">
+      <div class="modal-content">
+        <h3 id="modal-checkout-title">
+          Konfirmasi Pesanan
+        </h3>
+        <form class="form-modal" id="form-checkout">
+          <div id="checkout-items-list">
+          </div>
+          <label for="payment-method">
+            Metode Pembayaran
+          </label>
+          <select id="payment-method" name="paymentMethod" required="">
+            <option value="tunai" data-icon="cash">
+              Tunai
+            </option>
+            <option value="digital" data-icon="digital">
+              Digital
+            </option>
+            <option value="transfer" data-icon="transfer">
+              Cash via Transfer Bank
+            </option>
+            <option value="ewallet" data-icon="ewallet">
+              E-Wallet
+            </option>
+          </select>
+          <button class="btn btn-primary" type="submit">
+            Bayar
+          </button>
+          <button class="btn btn-light" id="btn-cancel-checkout" type="button">
+            Batal
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- Modal Cetak Struk -->
+    <div aria-hidden="true" aria-labelledby="modal-receipt-title" aria-modal="true" class="modal" id="modal-receipt" role="dialog">
+      <div class="modal-content receipt-content">
+        <h3 id="modal-receipt-title">
+          Struk Transaksi
+        </h3>
+        <pre aria-label="Detail struk transaksi" class="receipt-text" id="receipt-text" tabindex="0"></pre>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-download-pdf">
+            Unduh PDF
+          </button>
+          <button class="btn btn-primary" id="btn-print">
+            Cetak
+          </button>
+          <button class="btn btn-light" id="btn-close-receipt">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container footer-container">
+      <p>
+        © 2024 Sistem Penjualan Makanan dan Minuman. All rights reserved.
+      </p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
